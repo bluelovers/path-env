@@ -1,29 +1,93 @@
 {
-  "name": "path-env",
-  "version": "0.0.12",
+  "name": "path-env2",
+  "version": "1.0.0",
   "description": "Manipulate $PATH environment variable",
-  "author": "Hoàng Văn Khải <hvksmr1996@gmail.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/ksxnodemodules/nodemonorepo#readme",
-  "bugs": {
-    "url": "https://github.com/ksxnodemodules/nodemonorepo/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ksxnodemodules/nodemonorepo.git",
-    "directory": "packages/typescript/path-env"
-  },
   "keywords": [
     "PATH",
     "env",
-    "env.PATH"
+    "env.PATH",
+    "create-by-yarn-tool",
+    "create-by-tsdx"
   ],
-  "main": "index.js",
-  "dependencies": {
-    "tslib": "^1.10.0",
-    "@types/node": "^13.1.6"
+  "homepage": "https://github.com/bluelovers/path-env#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/path-env/issues"
   },
-  "engines": {
-    "node": ">= 8.9.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/path-env.git"
+  },
+  "license": "MIT",
+  "author": "Hoàng Văn Khải <hvksmr1996@gmail.com>",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json",
+    "./src/*": "./src/*"
+  },
+  "main": "dist/index.cjs",
+  "unpkg": "dist/index.umd.production.min.cjs",
+  "module": "dist/index.esm.mjs",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "pretest": "echo pretest",
+    "test": "jest --passWithNoTests",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:clearCache": "jest --clearCache",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "posttest": "yarn run build",
+    "install:frozenLockfile": "yarn-tool install --frozen-lockfile",
+    "install:resetLockfile": "yarn-tool install --reset-lockfile",
+    "build": "yarn run build:tsdx && yarn run build:dts:bundle",
+    "build:dts:bundle": "ynpx @bluelovers/dts-bundle-generator -o ./dist/index.d.ts ./src/index.ts --no-banner --inline-declare-global & echo build:dts:bundle",
+    "build:dts:copy": "copy .\\src\\index.d.ts .\\dist\\index.d.ts & echo build:dts",
+    "build:dts:tsc": "yarn run build:dts:tsc:emit && yarn run build:dts:copy",
+    "build:dts:tsc:emit": "tsc --emitDeclarationOnly --declaration --noEmit false",
+    "build:tsdx": "ynpx @bluelovers/tsdx build --target node",
+    "ci:install": "yarn install --frozen-lockfile && yarn add -W typescript@next jest ts-jest ts-node ynpx lerna yarn-tool",
+    "ci:build": "echo ci:build",
+    "npm:publish": "npm publish",
+    "npm:publish:bump": "yarn run version:bump && npm publish",
+    "preversion": "echo preversion && yarn run test",
+    "version": "echo version",
+    "version:bump": "yarn-tool version",
+    "postversion": "echo postversion",
+    "prepublish": "echo prepublish",
+    "prepare": "echo prepare",
+    "prepublishOnly": "yarn run preversion",
+    "prepublishOnly:check-bin": "ynpx --quiet @yarn-tool/check-pkg-bin",
+    "prepublishOnly:update": "yarn run ncu && yarn run sort-package-json",
+    "prepack": "echo prepack",
+    "pack": "echo pack",
+    "postpack": "echo postpack",
+    "publish": "echo publish",
+    "postpublish": "yarn run postpublish:changelog && yarn run postpublish:git:commit && yarn run postpublish:git:tag && yarn run postpublish:git:push",
+    "postpublish:changelog": "ynpx --quiet @yarn-tool/changelog && git add ./CHANGELOG.md",
+    "postpublish:git:commit": "git commit -m \"chore(release): publish\" . & echo postpublish:git:commit",
+    "postpublish:git:push": "git push --follow-tags",
+    "postpublish:git:tag": "ynpx --quiet @yarn-tool/tag",
+    "postpublishOnly": "echo postpublishOnly",
+    "ncu": "yarn-tool ncu -u",
+    "sort-package-json": "yarn-tool sort",
+    "tsc:showConfig": "ynpx get-current-tsconfig -p"
+  },
+  "dependencies": {
+    "ts-type": ">=2"
+  },
+  "devDependencies": {
+    "@bluelovers/tsconfig": "^1.0.30",
+    "@types/jest": "^28.1.8",
+    "@types/node": "*",
+    "tslib": "^2"
+  },
+  "packageManager": "yarn@1.22.19"
 }
