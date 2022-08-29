@@ -147,7 +147,7 @@ describe('subject.pathString being called', () => {
 
   describe('with specified `string`, without specifying `delim`', () => {
     testPathFactory(
-      () => subject.pathString('specified:string:param'),
+      () => subject.pathString(['specified', 'string', 'param'].join(path.delimiter)),
       ['specified', 'string', 'param'],
       path.delimiter as PathDelimiter
     )
